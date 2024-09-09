@@ -1,4 +1,5 @@
 package es.cic.curso06.backend.Model;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -6,14 +7,12 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
-
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-
 import jakarta.persistence.Column;
 
 @Entity
-@Table(name = "OBJETO")
-public class Objeto {
+@Table(name = "ASTRO")
+public class Astro {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -48,15 +47,15 @@ public class Objeto {
     private float edad;
 
     @ManyToOne
-    @JsonIgnoreProperties("objetos")
+    @JsonIgnoreProperties("astros")
     @JoinColumn(name = "TIPO_ID")
     private Tipo tipo;
 
     // Constructor vacío
-    public Objeto() {}
+    public Astro() {}
 
     // Constructor genérico
-    public Objeto(String nombre, String descripcion, float masa, float densidad, float distancia, float magnitudAparente, float corrimientoAlRojo, float temperatura, float edad, Tipo tipo) {
+    public Astro(String nombre, String descripcion, float masa, float densidad, float distancia, float magnitudAparente, float corrimientoAlRojo, float temperatura, float edad, Tipo tipo) {
         this.nombre = nombre;
         this.descripcion = descripcion;
         this.masa = masa;

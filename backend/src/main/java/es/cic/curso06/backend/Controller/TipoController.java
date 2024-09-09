@@ -44,7 +44,7 @@ public class TipoController {
         tipo.setDescripcion(tipoDetails.getDescripcion());
         tipo.setLuminoso(tipoDetails.isLuminoso());
         tipo.setOrbitante(tipoDetails.isOrbitante());
-        tipo.setObjetos(tipoDetails.getObjetos());
+        tipo.setAstros(tipoDetails.getAstros());
         Tipo updatedTipo = tipoService.save(tipo);
         return ResponseEntity.ok(updatedTipo);
     }

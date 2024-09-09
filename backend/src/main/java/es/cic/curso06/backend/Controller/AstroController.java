@@ -1,6 +1,5 @@
 package es.cic.curso06.backend.Controller;
 
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -14,52 +13,52 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
-import es.cic.curso06.backend.Model.Objeto;
-import es.cic.curso06.backend.Service.ObjetoService;
+import es.cic.curso06.backend.Model.Astro;
+import es.cic.curso06.backend.Service.AstroService;
 
 @RestController
-@RequestMapping("/api/objetos")
-public class ObjetoController {
+@RequestMapping("/api/astros")
+public class AstroController {
 
     @Autowired
-    private ObjetoService objetoService;
+    private AstroService astroService;
 
     @GetMapping
-    public List<Objeto> getAllObjetos() {
-        return objetoService.findAll();
+    public List<Astro> getAllAstros() {
+        return astroService.findAll();
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Objeto> getObjetoById(@PathVariable Long id) {
-        Objeto objeto = objetoService.findById(id);
-        if (objeto == null) {
+    public ResponseEntity<Astro> getAstroById(@PathVariable Long id) {
+        Astro astro = astroService.findById(id);
+        if (astro == null) {
             return ResponseEntity.notFound().build();
         }
-        return ResponseEntity.ok(objeto);
+        return ResponseEntity.ok(astro);
     }
 
     @PostMapping
-    public Objeto createObjeto(@RequestBody Objeto objeto) {
-        return objetoService.save(objeto);
+    public Astro createAstro(@RequestBody Astro astro) {
+        return astroService.save(astro);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Objeto> updateObjeto(@PathVariable Long id, @RequestBody Objeto objetoDetails) {
-        Objeto objeto = objetoService.findById(id);
-        if (objeto == null) {
+    public ResponseEntity<Astro> updateAstro(@PathVariable Long id, @RequestBody Astro astroDetails) {
+        Astro astro = astroService.findById(id);
+        if (astro == null) {
             return ResponseEntity.notFound().build();
         }
-        Objeto updatedObjeto = objetoService.save(objeto);
-        return ResponseEntity.ok(updatedObjeto);
+        Astro updatedAstro = astroService.save(astro);
+        return ResponseEntity.ok(updatedAstro);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteObjeto(@PathVariable Long id) {
-        Objeto objeto = objetoService.findById(id);
-        if (objeto == null) {
+    public ResponseEntity<Void> deleteAstro(@PathVariable Long id) {
+        Astro astro = astroService.findById(id);
+        if (astro == null) {
             return ResponseEntity.notFound().build();
         }
-        objetoService.delete(objeto);
+        astroService.delete(astro);
         return ResponseEntity.noContent().build();
     }
 }

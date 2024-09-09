@@ -32,13 +32,13 @@ public class Tipo {
     @Column(name = "ORBITANTE")
     private boolean orbitante;
 
-    @OneToMany(mappedBy = "tipo",cascade = {CascadeType.PERSIST, CascadeType.MERGE}, orphanRemoval = true)
-    private List<Objeto> objetos;
+    @OneToMany(mappedBy = "tipo", cascade = {CascadeType.PERSIST, CascadeType.MERGE}, orphanRemoval = true)
+    private List<Astro> astros;
 
     // Constructor vacío
     public Tipo() {
-        this.objetos = new ArrayList<>();
-        }
+        this.astros = new ArrayList<>();
+    }
 
     // Constructor genérico
     public Tipo(String nombre, String descripcion, boolean luminoso, boolean orbitante) {
@@ -46,15 +46,15 @@ public class Tipo {
         this.descripcion = descripcion;
         this.luminoso = luminoso;
         this.orbitante = orbitante;
-        this.objetos = new ArrayList<>();
+        this.astros = new ArrayList<>();
     }
 
-    public Tipo(String nombre, String descripcion, boolean luminoso, boolean orbitante, ArrayList<Objeto> objetos) {
+    public Tipo(String nombre, String descripcion, boolean luminoso, boolean orbitante, ArrayList<Astro> astros) {
         this.nombre = nombre;
         this.descripcion = descripcion;
         this.luminoso = luminoso;
         this.orbitante = orbitante;
-        this.objetos = objetos;
+        this.astros = astros;
     }
 
     // Getters y Setters
@@ -98,21 +98,21 @@ public class Tipo {
         this.orbitante = orbitante;
     }
 
-    public List<Objeto> getObjetos() {
-        return objetos;
+    public List<Astro> getAstros() {
+        return astros;
     }
 
-    public void setObjetos(List<Objeto> objetos) {
-        this.objetos = objetos;
+    public void setAstros(List<Astro> astros) {
+        this.astros = astros;
     }
 
-    public void addObjeto(Objeto objeto) {
-        objetos.add(objeto);
-        objeto.setTipo(this);
+    public void addAstro(Astro astro) {
+        astros.add(astro);
+        astro.setTipo(this);
     }
 
-    public void removeObjeto(Objeto objeto) {
-        objetos.remove(objeto);
-        objeto.setTipo(null);
+    public void removeAstro(Astro astro) {
+        astros.remove(astro);
+        astro.setTipo(null);
     }
 }
