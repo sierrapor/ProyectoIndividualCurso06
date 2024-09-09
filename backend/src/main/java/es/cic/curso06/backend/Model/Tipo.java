@@ -6,26 +6,39 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
+import jakarta.persistence.Column;
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
+@Table(name = "TIPO")
 public class Tipo {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "ID")
     private Long id;
 
+    @Column(name = "NOMBRE")
     private String nombre;
+
+    @Column(name = "DESCRIPCION")
     private String descripcion;
+
+    @Column(name = "LUMINOSO")
     private boolean luminoso;
+
+    @Column(name = "ORBITANTE")
     private boolean orbitante;
 
-    @OneToMany(mappedBy = "tipo", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Objeto> objetos = new ArrayList<>();
+    @OneToMany(mappedBy = "tipo",cascade = {CascadeType.PERSIST, CascadeType.MERGE}, orphanRemoval = true)
+    private List<Objeto> objetos;
 
     // Constructor vacío
-    public Tipo() {}
+    public Tipo() {
+        this.objetos = new ArrayList<>();
+        }
 
     // Constructor genérico
     public Tipo(String nombre, String descripcion, boolean luminoso, boolean orbitante) {
@@ -33,6 +46,15 @@ public class Tipo {
         this.descripcion = descripcion;
         this.luminoso = luminoso;
         this.orbitante = orbitante;
+        this.objetos = new ArrayList<>();
+    }
+
+    public Tipo(String nombre, String descripcion, boolean luminoso, boolean orbitante, ArrayList<Objeto> objetos) {
+        this.nombre = nombre;
+        this.descripcion = descripcion;
+        this.luminoso = luminoso;
+        this.orbitante = orbitante;
+        this.objetos = objetos;
     }
 
     // Getters y Setters

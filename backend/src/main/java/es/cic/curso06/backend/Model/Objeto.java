@@ -1,31 +1,55 @@
 package es.cic.curso06.backend.Model;
-
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+import jakarta.persistence.Column;
 
 @Entity
+@Table(name = "OBJETO")
 public class Objeto {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "ID")
     private Long id;
 
+    @Column(name = "NOMBRE")
     private String nombre;
+
+    @Column(name = "DESCRIPCION")
     private String descripcion;
+
+    @Column(name = "MASA")
     private float masa;
+
+    @Column(name = "DENSIDAD")
     private float densidad;
+
+    @Column(name = "DISTANCIA")
     private float distancia;
+
+    @Column(name = "MAGNITUD_APARENTE")
     private float magnitudAparente;
+
+    @Column(name = "CORRIMIENTO_AL_ROJO")
     private float corrimientoAlRojo;
+
+    @Column(name = "TEMPERATURA")
     private float temperatura;
+
+    @Column(name = "EDAD")
     private float edad;
 
     @ManyToOne
-    @JoinColumn(name = "tipo_id")
+    @JsonIgnoreProperties("objetos")
+    @JoinColumn(name = "TIPO_ID")
     private Tipo tipo;
 
     // Constructor vacío
