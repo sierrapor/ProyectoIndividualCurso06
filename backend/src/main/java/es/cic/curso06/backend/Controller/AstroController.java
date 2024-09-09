@@ -24,8 +24,8 @@ public class AstroController {
     private AstroService astroService;
 
     @GetMapping
-    public List<Astro> getAllAstros() {
-        return astroService.findAll();
+    public ResponseEntity<List<Astro>> getAllAstros() {
+        return ResponseEntity.ok(astroService.findAll());
     }
 
     @GetMapping("/{id}")
@@ -38,18 +38,19 @@ public class AstroController {
     }
 
     @PostMapping
-    public Astro createAstro(@RequestBody Astro astro) {
-        return astroService.save(astro);
+    public ResponseEntity<Astro> createAstro(@RequestBody Astro astro) {
+        if (astro.getId() != null){
+            return ResponseEntity.badRequest().build();
+        }
+        return ResponseEntity.ok(astroService.save(astro));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Astro> updateAstro(@PathVariable Long id, @RequestBody Astro astroDetails) {
-        Astro astro = astroService.findById(id);
-        if (astro == null) {
-            return ResponseEntity.notFound().build();
+    public ResponseEntity<Astro> updateAstro(@PathVariable Long id, @RequestBody Astro astro) {
+        if (astro.getId() != id || astro.getId() == null){
+            return ResponseEntity.badRequest().build();
         }
-        Astro updatedAstro = astroService.save(astro);
-        return ResponseEntity.ok(updatedAstro);
+        return ResponseEntity.ok(astroService.save(astro));
     }
 
     @DeleteMapping("/{id}")

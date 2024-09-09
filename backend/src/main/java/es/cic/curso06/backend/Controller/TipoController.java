@@ -30,23 +30,19 @@ public class TipoController {
     }
 
     @PostMapping
-    public Tipo createTipo(@RequestBody Tipo tipo) {
-        return tipoService.save(tipo);
+    public ResponseEntity<Tipo> createTipo(@RequestBody Tipo tipo) {
+        if (tipo.getId() != null) {
+            return ResponseEntity.badRequest().build();
+        }
+        return ResponseEntity.ok(tipoService.save(tipo));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Tipo> updateTipo(@PathVariable Long id, @RequestBody Tipo tipoDetails) {
-        Tipo tipo = tipoService.findById(id);
-        if (tipo == null) {
+    public ResponseEntity<Tipo> updateTipo(@PathVariable Long id, @RequestBody Tipo tipo) {
+        if (tipoService.findById(id) == null || tipo.getId() == null) {
             return ResponseEntity.notFound().build();
         }
-        tipo.setNombre(tipoDetails.getNombre());
-        tipo.setDescripcion(tipoDetails.getDescripcion());
-        tipo.setLuminoso(tipoDetails.isLuminoso());
-        tipo.setOrbitante(tipoDetails.isOrbitante());
-        tipo.setAstros(tipoDetails.getAstros());
-        Tipo updatedTipo = tipoService.save(tipo);
-        return ResponseEntity.ok(updatedTipo);
+        return ResponseEntity.ok(tipoService.save(tipo));
     }
 
     @DeleteMapping("/{id}")
