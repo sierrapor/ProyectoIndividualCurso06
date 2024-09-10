@@ -7,8 +7,13 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+
+
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.Column;
+import jakarta.validation.constraints.Positive;
+import jakarta.validation.constraints.PositiveOrZero;
+import jakarta.validation.constraints.Size;
 
 @Entity
 @Table(name = "ASTRO")
@@ -19,30 +24,38 @@ public class Astro {
     @Column(name = "ID")
     private Long id;
 
+    @Size(max = 50, min = 1)
     @Column(name = "NOMBRE")
     private String nombre;
 
+    @Size(max = 500, min = 1)
     @Column(name = "DESCRIPCION")
     private String descripcion;
 
+    @Positive
     @Column(name = "MASA")
     private float masa;
 
+    @Positive
     @Column(name = "DENSIDAD")
     private float densidad;
 
+    @Positive
     @Column(name = "DISTANCIA")
     private float distancia;
 
     @Column(name = "MAGNITUD_APARENTE")
     private float magnitudAparente;
 
+    @PositiveOrZero
     @Column(name = "CORRIMIENTO_AL_ROJO")
     private float corrimientoAlRojo;
 
+    @Positive
     @Column(name = "TEMPERATURA")
     private float temperatura;
 
+    @Positive
     @Column(name = "EDAD")
     private float edad;
 
