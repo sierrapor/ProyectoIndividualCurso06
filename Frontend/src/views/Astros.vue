@@ -32,6 +32,10 @@ const viewAstro = (id) => {
   router.push(`/astrosForm/${id}`);
 };
 
+const editAstro = (id) => {
+  router.push(`/astrosForm/${id}?edit=true`);
+};
+
 onMounted(() => {
   fetchAstros();
 });
@@ -69,6 +73,7 @@ onMounted(() => {
             <td>{{ astro.tipo.nombre }}</td>
             <td>
               <button @click="viewAstro(astro.id)">Ver</button>
+              <button @click="editAstro(astro.id)">Actualizar</button>
               <button @click="deleteAstro(astro.id)">Borrar</button>
             </td>
           </tr>

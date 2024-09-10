@@ -11,6 +11,7 @@ const tipo = ref({
 });
 
 const isViewMode = ref(false);
+const isEditMode = ref(false);
 const router = useRouter();
 const route = useRoute();
 
@@ -25,16 +26,24 @@ const fetchTipo = async (id) => {
 
 const submitForm = async () => {
   try {
-    await axios.post('/api/tipos', tipo.value);
+    if (isEditMode.value) {
+      await axios.put(`/api/tipos/${route.params.id}`, tipo.value);
+    } else {
+      await axios.post('/api/tipos', tipo.value);
+    }
     router.push('/tipos');
   } catch (error) {
-    console.error('Error creating tipo:', error);
+    console.error('Error submitting form:', error);
   }
 };
 
 onMounted(() => {
   if (route.params.id) {
-    isViewMode.value = true;
+    if (route.query.edit) {
+      isEditMode.value = true;
+    } else {
+      isViewMode.value = true;
+    }
     fetchTipo(route.params.id);
   }
 });
@@ -42,7 +51,7 @@ onMounted(() => {
 
 <template>
     <div class="form-container">
-      <h1>{{ isViewMode ? 'Ver Tipo' : 'Crear Tipo' }}</h1>
+      <h1>{{ isViewMode ? 'Ver Tipo' : isEditMode ? 'Actualizar Tipo' : 'Crear Tipo' }}</h1>
       <form @submit.prevent="submitForm" v-if="!isViewMode">
         <div class="form-group">
           <label for="nombre">Nombre:</label>
@@ -60,7 +69,7 @@ onMounted(() => {
           <label for="orbitante">Orbitante:</label>
           <input type="checkbox" id="orbitante" v-model="tipo.orbitante" />
         </div>
-        <button type="submit" class="submit-button">Crear</button>
+        <button type="submit" class="submit-button">{{ isEditMode ? 'Actualizar' : 'Crear' }}</button>
       </form>
       <div v-else>
         <div class="form-group">

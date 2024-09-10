@@ -20,6 +20,7 @@ const astro = ref({
 
 const tipos = ref([]);
 const isViewMode = ref(false);
+const isEditMode = ref(false);
 const router = useRouter();
 const route = useRoute();
 
@@ -43,17 +44,25 @@ const fetchAstro = async (id) => {
 
 const submitForm = async () => {
   try {
-    await axios.post('/api/astros', astro.value);
+    if (isEditMode.value) {
+      await axios.put(`/api/astros/${route.params.id}`, astro.value);
+    } else {
+      await axios.post('/api/astros', astro.value);
+    }
     router.push('/astros');
   } catch (error) {
-    console.error('Error creating astro:', error);
+    console.error('Error submitting form:', error);
   }
 };
 
 onMounted(() => {
   fetchTipos();
   if (route.params.id) {
-    isViewMode.value = true;
+    if (route.query.edit) {
+      isEditMode.value = true;
+    } else {
+      isViewMode.value = true;
+    }
     fetchAstro(route.params.id);
   }
 });
@@ -61,7 +70,7 @@ onMounted(() => {
 
 <template>
     <div class="form-container">
-      <h1>{{ isViewMode ? 'Ver Astro' : 'Crear Astro' }}</h1>
+      <h1>{{ isViewMode ? 'Ver Astro' : isEditMode ? 'Actualizar Astro' : 'Crear Astro' }}</h1>
       <form @submit.prevent="submitForm" v-if="!isViewMode">
         <div class="form-group">
           <label for="nombre">Nombre:</label>
@@ -105,7 +114,7 @@ onMounted(() => {
             <option v-for="tipo in tipos" :key="tipo.id" :value="tipo.id">{{ tipo.nombre }}</option>
           </select>
         </div>
-        <button type="submit" class="submit-button">Crear</button>
+        <button type="submit" class="submit-button">{{ isEditMode ? 'Actualizar' : 'Crear' }}</button>
       </form>
       <div v-else>
         <div class="form-group">

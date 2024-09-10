@@ -32,6 +32,10 @@ const viewTipo = (id) => {
   router.push(`/tiposForm/${id}`);
 };
 
+const editTipo = (id) => {
+  router.push(`/tiposForm/${id}?edit=true`);
+};
+
 onMounted(() => {
   fetchTipos();
 });
@@ -59,6 +63,7 @@ onMounted(() => {
             <td>{{ tipo.orbitante ? 'Sí' : 'No' }}</td>
             <td>
               <button @click="viewTipo(tipo.id)">Ver</button>
+              <button @click="editTipo(tipo.id)">Actualizar</button>
               <button @click="deleteTipo(tipo.id)">Borrar</button>
             </td>
           </tr>
