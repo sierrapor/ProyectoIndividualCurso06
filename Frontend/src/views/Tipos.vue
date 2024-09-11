@@ -77,8 +77,10 @@ onMounted(() => {
 
 <template>
   <div>
-    <h1>Tipos</h1>
-    <button @click="goToCreateForm" class="create-button">Crear</button>
+    <div class="header-container">
+      <h1>Tipos de Objetos Astronómicos</h1>
+      <button @click="goToCreateForm" class="create-button">Crear</button>
+    </div>
     <div class="table-container">
       <table>
         <thead>
@@ -128,6 +130,13 @@ onMounted(() => {
 </template>
 
 <style scoped>
+.header-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
 .table-container {
   max-height: 650px; /* Aumenta la altura según tus necesidades */
   overflow-y: auto;
@@ -193,7 +202,7 @@ button.delete-button:hover {
   color: white;
   border: none;
   padding: 10px 20px;
-  margin-bottom: 20px;
+  margin-top: 10px;
   cursor: pointer;
   border-radius: 4px;
 }
