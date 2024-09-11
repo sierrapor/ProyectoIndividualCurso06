@@ -1,12 +1,17 @@
 <script setup>
 import { ref, onMounted } from 'vue';
-import { useRouter } from 'vue-router';
+import { useRouter, useRoute } from 'vue-router';
 import axios from 'axios';
+import Notification from '@/components/Notification.vue';
 
 const astros = ref([]);
 const router = useRouter();
+const route = useRoute();
 const showModal = ref(false);
 const astroToDelete = ref(null);
+const astroToDeleteName = ref('');
+const notificationMessage = ref('');
+const notificationType = ref('success');
 
 const fetchAstros = async () => {
   try {
@@ -18,8 +23,12 @@ const fetchAstros = async () => {
 };
 
 const confirmDeleteAstro = (id) => {
-  astroToDelete.value = id;
-  showModal.value = true;
+  const astro = astros.value.find(a => a.id === id);
+  if (astro) {
+    astroToDelete.value = id;
+    astroToDeleteName.value = astro.nombre;
+    showModal.value = true;
+  }
 };
 
 const deleteAstro = async () => {
@@ -27,9 +36,14 @@ const deleteAstro = async () => {
     await axios.delete(`/api/astros/${astroToDelete.value}`);
     astros.value = astros.value.filter(astro => astro.id !== astroToDelete.value);
     showModal.value = false;
+    notificationMessage.value = `El astro "${astroToDeleteName.value}" ha sido borrado correctamente.`;
+    notificationType.value = 'success';
     astroToDelete.value = null;
+    astroToDeleteName.value = '';
   } catch (error) {
     console.error('Error deleting astro:', error);
+    notificationMessage.value = 'Error al eliminar el astro';
+    notificationType.value = 'error';
   }
 };
 
@@ -51,10 +65,14 @@ const formatNumber = (number) => {
 
 onMounted(() => {
   fetchAstros();
+  if (route.query.message) {
+    notificationMessage.value = route.query.message;
+    notificationType.value = route.query.type || 'success';
+  }
 });
 </script>
 
-<<template>
+<template>
   <div>
     <h1>Astros</h1>
     <button @click="goToCreateForm" class="create-button">Crear</button>
@@ -96,11 +114,13 @@ onMounted(() => {
     <div v-if="showModal" class="modal">
       <div class="modal-content">
         <span class="close" @click="showModal = false">&times;</span>
-        <p>¿Estás seguro de que deseas borrar este astro?</p>
+        <p>¿Estás seguro de que deseas borrar el astro "{{ astroToDeleteName }}"?</p>
         <button @click="deleteAstro" class="confirm-button">Sí</button>
         <button @click="showModal = false" class="cancel-button">No</button>
       </div>
     </div>
+
+    <Notification v-if="notificationMessage" :message="notificationMessage" :type="notificationType" />
   </div>
 </template>
 

@@ -1,13 +1,18 @@
 <script setup>
 import { ref, onMounted } from 'vue';
-import { useRouter } from 'vue-router';
+import { useRouter, useRoute } from 'vue-router';
 import axios from 'axios';
+import Notification from '@/components/Notification.vue';
 
 const tipos = ref([]);
 const router = useRouter();
+const route = useRoute();
 const showModal = ref(false);
 const showErrorModal = ref(false);
 const tipoToDelete = ref(null);
+const tipoToDeleteName = ref('');
+const notificationMessage = ref('');
+const notificationType = ref('success');
 
 const fetchTipos = async () => {
   try {
@@ -20,15 +25,16 @@ const fetchTipos = async () => {
 
 const confirmDeleteTipo = async (id) => {
   try {
-    // Verificar si el tipo tiene obras asociadas
     const tipo = tipos.value.find(t => t.id === id);
     if (tipo && tipo.astros.length > 0) {
-      showErrorModal.value = true; // Muestra la ventana emergente de error
+      tipoToDeleteName.value = tipo.nombre;
+      showErrorModal.value = true;
       return;
     }
     
-    tipoToDelete.value = id; // Establece el ID del tipo para eliminar
-    showModal.value = true; // Muestra la ventana emergente de eliminación
+    tipoToDelete.value = id;
+    tipoToDeleteName.value = tipo.nombre;
+    showModal.value = true;
   } catch (error) {
     console.error('Error deleting tipo:', error);
   }
@@ -39,7 +45,10 @@ const deleteTipo = async () => {
     await axios.delete(`/api/tipos/${tipoToDelete.value}`);
     tipos.value = tipos.value.filter(tipo => tipo.id !== tipoToDelete.value);
     showModal.value = false;
+    notificationMessage.value = `El tipo "${tipoToDeleteName.value}" ha sido borrado correctamente.`;
+    notificationType.value = 'success';
     tipoToDelete.value = null;
+    tipoToDeleteName.value = '';
   } catch (error) {
     console.error('Error deleting tipo:', error);
   }
@@ -59,6 +68,10 @@ const editTipo = (id) => {
 
 onMounted(() => {
   fetchTipos();
+  if (route.query.message) {
+    notificationMessage.value = route.query.message;
+    notificationType.value = route.query.type || 'success';
+  }
 });
 </script>
 
@@ -94,7 +107,7 @@ onMounted(() => {
     <div v-if="showModal" class="modal">
       <div class="modal-content">
         <span class="close" @click="showModal = false">&times;</span>
-        <p>¿Estás seguro de que deseas borrar este tipo?</p>
+        <p>¿Estás seguro de que deseas borrar el tipo "{{ tipoToDeleteName }}"?</p>
         <button @click="deleteTipo" class="confirm-button">Sí</button>
         <button @click="showModal = false" class="cancel-button">No</button>
       </div>
@@ -103,10 +116,12 @@ onMounted(() => {
     <div v-if="showErrorModal" class="modal">
       <div class="modal-content">
         <span class="close" @click="showErrorModal = false">&times;</span>
-        <p>No se puede borrar este tipo porque tiene astros asociados.</p>
+        <p>No se puede borrar el tipo "{{ tipoToDeleteName }}" porque tiene astros asociados.</p>
         <button @click="showErrorModal = false" class="cancel-button">Cerrar</button>
       </div>
     </div>
+
+    <Notification v-if="notificationMessage" :message="notificationMessage" :type="notificationType" />
   </div>
 </template>
 

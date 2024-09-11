@@ -46,10 +46,11 @@ const submitForm = async () => {
   try {
     if (isEditMode.value) {
       await axios.put(`/api/astros/${route.params.id}`, astro.value);
+      router.push({ path: '/astros', query: { message: `El astro "${astro.value.nombre}" ha sido actualizado correctamente.`, type: 'success' } });
     } else {
       await axios.post('/api/astros', astro.value);
+      router.push({ path: '/astros', query: { message: `El astro "${astro.value.nombre}" ha sido creado correctamente.`, type: 'success' } });
     }
-    router.push('/astros');
   } catch (error) {
     console.error('Error submitting form:', error);
   }
@@ -73,98 +74,99 @@ onMounted(() => {
 </script>
 
 <template>
-    <div class="form-container">
-      <h1>{{ isViewMode ? 'Ver Astro' : isEditMode ? 'Actualizar Astro' : 'Crear Astro' }}</h1>
-      <form @submit.prevent="submitForm" v-if="!isViewMode">
-        <div class="form-group">
-          <label for="nombre">Nombre:</label>
-          <input type="text" id="nombre" v-model="astro.nombre" required />
-        </div>
-        <div class="form-group">
-          <label for="descripcion">Descripción:</label>
-          <input type="text" id="descripcion" v-model="astro.descripcion" required />
-        </div>
-        <div class="form-group">
-          <label for="masa">Masa:</label>
-          <input type="number" id="masa" v-model="astro.masa" required />
-        </div>
-        <div class="form-group">
-          <label for="densidad">Densidad:</label>
-          <input type="number" id="densidad" v-model="astro.densidad" required />
-        </div>
-        <div class="form-group">
-          <label for="distancia">Distancia:</label>
-          <input type="number" id="distancia" v-model="astro.distancia" required />
-        </div>
-        <div class="form-group">
-          <label for="magnitudAparente">Magnitud Aparente:</label>
-          <input type="number" id="magnitudAparente" v-model="astro.magnitudAparente" required />
-        </div>
-        <div class="form-group">
-          <label for="corrimientoAlRojo">Corrimiento al Rojo:</label>
-          <input type="number" id="corrimientoAlRojo" v-model="astro.corrimientoAlRojo" required />
-        </div>
-        <div class="form-group">
-          <label for="temperatura">Temperatura:</label>
-          <input type="number" id="temperatura" v-model="astro.temperatura" required />
-        </div>
-        <div class="form-group">
-          <label for="edad">Edad:</label>
-          <input type="number" id="edad" v-model="astro.edad" required />
-        </div>
-        <div class="form-group">
-          <label for="tipo">Tipo:</label>
-          <select id="tipo" v-model="astro.tipo.id" required>
-            <option v-for="tipo in tipos" :key="tipo.id" :value="tipo.id">{{ tipo.nombre }}</option>
-          </select>
-        </div>
-        <button type="submit" class="submit-button">{{ isEditMode ? 'Actualizar' : 'Crear' }}</button>
-        <button type="button" @click="cancel" class="cancel-button">Cancelar</button>
-      </form>
-      <div v-else>
-        <div class="form-group">
-          <label>Nombre:</label>
-          <p>{{ astro.nombre }}</p>
-        </div>
-        <div class="form-group">
-          <label>Descripción:</label>
-          <p>{{ astro.descripcion }}</p>
-        </div>
-        <div class="form-group">
-          <label>Masa:</label>
-          <p>{{ astro.masa }}</p>
-        </div>
-        <div class="form-group">
-          <label>Densidad:</label>
-          <p>{{ astro.densidad }}</p>
-        </div>
-        <div class="form-group">
-          <label>Distancia:</label>
-          <p>{{ astro.distancia }}</p>
-        </div>
-        <div class="form-group">
-          <label>Magnitud Aparente:</label>
-          <p>{{ astro.magnitudAparente }}</p>
-        </div>
-        <div class="form-group">
-          <label>Corrimiento al Rojo:</label>
-          <p>{{ astro.corrimientoAlRojo }}</p>
-        </div>
-        <div class="form-group">
-          <label>Temperatura:</label>
-          <p>{{ astro.temperatura }}</p>
-        </div>
-        <div class="form-group">
-          <label>Edad:</label>
-          <p>{{ astro.edad }}</p>
-        </div>
-        <div class="form-group">
-          <label>Tipo:</label>
-          <p>{{ astro.tipo.nombre }}</p>
-        </div>
-        <button @click="cancel" class="cancel-button">Atrás</button>
+  <div class="form-container">
+    <h1>{{ isViewMode ? 'Ver Astro' : isEditMode ? 'Actualizar Astro' : 'Crear Astro' }}</h1>
+    <form @submit.prevent="submitForm" v-if="!isViewMode">
+      <div class="form-group">
+        <label for="nombre">Nombre:</label>
+        <input type="text" id="nombre" v-model="astro.nombre" required />
       </div>
+      <div class="form-group">
+        <label for="descripcion">Descripción:</label>
+        <input type="text" id="descripcion" v-model="astro.descripcion" required />
+      </div>
+      <div class="form-group">
+        <label for="masa">Masa:</label>
+        <input type="number" id="masa" v-model="astro.masa" required />
+      </div>
+      <div class="form-group">
+        <label for="densidad">Densidad:</label>
+        <input type="number" id="densidad" v-model="astro.densidad" required />
+      </div>
+      <div class="form-group">
+        <label for="distancia">Distancia:</label>
+        <input type="number" id="distancia" v-model="astro.distancia" required />
+      </div>
+      <div class="form-group">
+        <label for="magnitudAparente">Magnitud Aparente:</label>
+        <input type="number" id="magnitudAparente" v-model="astro.magnitudAparente" required />
+      </div>
+      <div class="form-group">
+        <label for="corrimientoAlRojo">Corrimiento al Rojo:</label>
+        <input type="number" id="corrimientoAlRojo" v-model="astro.corrimientoAlRojo" required />
+      </div>
+      <div class="form-group">
+        <label for="temperatura">Temperatura:</label>
+        <input type="number" id="temperatura" v-model="astro.temperatura" required />
+      </div>
+      <div class="form-group">
+        <label for="edad">Edad:</label>
+        <input type="number" id="edad" v-model="astro.edad" required />
+      </div>
+      <div class="form-group">
+        <label for="tipo">Tipo:</label>
+        <select id="tipo" v-model="astro.tipo.id" required>
+          <option v-for="tipo in tipos" :key="tipo.id" :value="tipo.id">{{ tipo.nombre }}</option>
+        </select>
+      </div>
+      <button type="submit" class="submit-button">{{ 'Guardar' }}</button>
+      <button type="button" @click="cancel" class="cancel-button">Cancelar</button>
+    </form>
+    <div v-else>
+      <div class="form-group">
+        <label>Nombre:</label>
+        <p>{{ astro.nombre }}</p>
+      </div>
+      <div class="form-group">
+        <label>Descripción:</label>
+        <p>{{ astro.descripcion }}</p>
+      </div>
+      <div class="form-group">
+        <label>Masa:</label>
+        <p>{{ astro.masa }}</p>
+      </div>
+      <div class="form-group">
+        <label>Densidad:</label>
+        <p>{{ astro.densidad }}</p>
+      </div>
+      <div class="form-group">
+        <label>Distancia:</label>
+        <p>{{ astro.distancia }}</p>
+      </div>
+      <div class="form-group">
+        <label>Magnitud Aparente:</label>
+        <p>{{ astro.magnitudAparente }}</p>
+      </div>
+      <div class="form-group">
+        <label>Corrimiento al Rojo:</label>
+        <p>{{ astro.corrimientoAlRojo }}</p>
+      </div>
+      <div class="form-group">
+        <label>Temperatura:</label>
+        <p>{{ astro.temperatura }}</p>
+      </div>
+      <div class="form-group">
+        <label>Edad:</label>
+        <p>{{ astro.edad }}</p>
+      </div>
+      <div class="form-group">
+        <label>Tipo:</label>
+        <p>{{ astro.tipo.nombre }}</p>
+      </div>
+      <button class="submit-button disabled-button" disabled>Guardar</button>
+      <button @click="cancel" class="cancel-button">Atrás</button>
     </div>
+  </div>
 </template>
 
 <style scoped>
@@ -225,5 +227,10 @@ select {
 
 .cancel-button:hover {
   background-color: #5a6268;
+}
+
+.disabled-button {
+  background-color: #d3d3d3;
+  cursor: not-allowed;
 }
 </style>

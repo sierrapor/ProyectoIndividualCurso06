@@ -28,10 +28,11 @@ const submitForm = async () => {
   try {
     if (isEditMode.value) {
       await axios.put(`/api/tipos/${route.params.id}`, tipo.value);
+      router.push({ path: '/tipos', query: { message: `El tipo "${tipo.value.nombre}" ha sido actualizado correctamente.`, type: 'success' } });
     } else {
       await axios.post('/api/tipos', tipo.value);
+      router.push({ path: '/tipos', query: { message: `El tipo "${tipo.value.nombre}" ha sido creado correctamente.`, type: 'success' } });
     }
-    router.push('/tipos');
   } catch (error) {
     console.error('Error submitting form:', error);
   }
@@ -54,52 +55,53 @@ onMounted(() => {
 </script>
 
 <template>
-    <div class="form-container">
-      <h1>{{ isViewMode ? 'Ver Tipo' : isEditMode ? 'Actualizar Tipo' : 'Crear Tipo' }}</h1>
-      <form @submit.prevent="submitForm" v-if="!isViewMode">
-        <div class="form-group">
-          <label for="nombre">Nombre:</label>
-          <input type="text" id="nombre" v-model="tipo.nombre" required />
-        </div>
-        <div class="form-group">
-          <label for="descripcion">Descripción:</label>
-          <input type="text" id="descripcion" v-model="tipo.descripcion" required />
-        </div>
-        <div class="form-group">
-          <label for="luminoso">Luminoso:</label>
-          <input type="checkbox" id="luminoso" v-model="tipo.luminoso" />
-        </div>
-        <div class="form-group">
-          <label for="orbitante">Orbitante:</label>
-          <input type="checkbox" id="orbitante" v-model="tipo.orbitante" />
-        </div>
-        <div class="form-group actions-column">
-          <button type="submit" class="submit-button">{{ isEditMode ? 'Actualizar' : 'Crear' }}</button>
-          <button type="button" @click="cancel" class="cancel-button">Cancelar</button>
-        </div>
-      </form>
-      <div v-else>
-        <div class="form-group">
-          <label>Nombre:</label>
-          <p>{{ tipo.nombre }}</p>
-        </div>
-        <div class="form-group">
-          <label>Descripción:</label>
-          <p>{{ tipo.descripcion }}</p>
-        </div>
-        <div class="form-group">
-          <label>Luminoso:</label>
-          <p>{{ tipo.luminoso ? 'Sí' : 'No' }}</p>
-        </div>
-        <div class="form-group">
-          <label>Orbitante:</label>
-          <p>{{ tipo.orbitante ? 'Sí' : 'No' }}</p>
-        </div>
-        <div class="form-group actions-column">
-          <button @click="cancel" class="cancel-button">Atrás</button>
-        </div>
+  <div class="form-container">
+    <h1>{{ isViewMode ? 'Ver Tipo' : isEditMode ? 'Actualizar Tipo' : 'Crear Tipo' }}</h1>
+    <form @submit.prevent="submitForm" v-if="!isViewMode">
+      <div class="form-group">
+        <label for="nombre">Nombre:</label>
+        <input type="text" id="nombre" v-model="tipo.nombre" required />
+      </div>
+      <div class="form-group">
+        <label for="descripcion">Descripción:</label>
+        <input type="text" id="descripcion" v-model="tipo.descripcion" required />
+      </div>
+      <div class="form-group">
+        <label for="luminoso">Luminoso:</label>
+        <input type="checkbox" id="luminoso" v-model="tipo.luminoso" />
+      </div>
+      <div class="form-group">
+        <label for="orbitante">Orbitante:</label>
+        <input type="checkbox" id="orbitante" v-model="tipo.orbitante" />
+      </div>
+      <div class="form-group actions-column">
+        <button type="submit" class="submit-button">{{ 'Guardar' }}</button>
+        <button type="button" @click="cancel" class="cancel-button">Cancelar</button>
+      </div>
+    </form>
+    <div v-else>
+      <div class="form-group">
+        <label>Nombre:</label>
+        <p>{{ tipo.nombre }}</p>
+      </div>
+      <div class="form-group">
+        <label>Descripción:</label>
+        <p>{{ tipo.descripcion }}</p>
+      </div>
+      <div class="form-group">
+        <label>Luminoso:</label>
+        <p>{{ tipo.luminoso ? 'Sí' : 'No' }}</p>
+      </div>
+      <div class="form-group">
+        <label>Orbitante:</label>
+        <p>{{ tipo.orbitante ? 'Sí' : 'No' }}</p>
+      </div>
+      <div class="form-group actions-column">
+        <button class="submit-button disabled-button" disabled>Guardar</button>
+        <button @click="cancel" class="cancel-button">Atrás</button>
       </div>
     </div>
+  </div>
 </template>
 
 <style scoped>
@@ -163,5 +165,10 @@ input[type="checkbox"] {
 
 .cancel-button:hover {
   background-color: #5a6268;
+}
+
+.disabled-button {
+  background-color: #d3d3d3;
+  cursor: not-allowed;
 }
 </style>
