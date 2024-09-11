@@ -5,6 +5,8 @@ import axios from 'axios';
 
 const astros = ref([]);
 const router = useRouter();
+const showModal = ref(false);
+const astroToDelete = ref(null);
 
 const fetchAstros = async () => {
   try {
@@ -15,10 +17,17 @@ const fetchAstros = async () => {
   }
 };
 
-const deleteAstro = async (id) => {
+const confirmDeleteAstro = (id) => {
+  astroToDelete.value = id;
+  showModal.value = true;
+};
+
+const deleteAstro = async () => {
   try {
-    await axios.delete(`/api/astros/${id}`);
-    astros.value = astros.value.filter(astro => astro.id !== id);
+    await axios.delete(`/api/astros/${astroToDelete.value}`);
+    astros.value = astros.value.filter(astro => astro.id !== astroToDelete.value);
+    showModal.value = false;
+    astroToDelete.value = null;
   } catch (error) {
     console.error('Error deleting astro:', error);
   }
@@ -36,12 +45,16 @@ const editAstro = (id) => {
   router.push(`/astrosForm/${id}?edit=true`);
 };
 
+const formatNumber = (number) => {
+  return number.toLocaleString('es-ES');
+};
+
 onMounted(() => {
   fetchAstros();
 });
 </script>
 
-<template>
+<<template>
   <div>
     <h1>Astros</h1>
     <button @click="goToCreateForm" class="create-button">Crear</button>
@@ -63,22 +76,31 @@ onMounted(() => {
       <tbody>
         <tr v-for="astro in astros" :key="astro.id">
           <td>{{ astro.nombre }}</td>
-          <td>{{ astro.masa }}</td>
-          <td>{{ astro.densidad }}</td>
-          <td>{{ astro.distancia }}</td>
-          <td>{{ astro.magnitudAparente }}</td>
-          <td>{{ astro.corrimientoAlRojo }}</td>
-          <td>{{ astro.temperatura }}</td>
-          <td>{{ astro.edad }}</td>
+          <td>{{ formatNumber(astro.masa) }}</td>
+          <td>{{ formatNumber(astro.densidad) }}</td>
+          <td>{{ formatNumber(astro.distancia) }}</td>
+          <td>{{ formatNumber(astro.magnitudAparente) }}</td>
+          <td>{{ formatNumber(astro.corrimientoAlRojo) }}</td>
+          <td>{{ formatNumber(astro.temperatura) }}</td>
+          <td>{{ formatNumber(astro.edad) }}</td>
           <td>{{ astro.tipo.nombre }}</td>
           <td class="actions-column">
             <button @click="viewAstro(astro.id)" class="view-button">Ver</button>
             <button @click="editAstro(astro.id)" class="edit-button">Actualizar</button>
-            <button @click="deleteAstro(astro.id)" class="delete-button">Borrar</button>
+            <button @click="confirmDeleteAstro(astro.id)" class="delete-button">Borrar</button>
           </td>
         </tr>
       </tbody>
     </table>
+
+    <div v-if="showModal" class="modal">
+      <div class="modal-content">
+        <span class="close" @click="showModal = false">&times;</span>
+        <p>¿Estás seguro de que deseas borrar este astro?</p>
+        <button @click="deleteAstro" class="confirm-button">Sí</button>
+        <button @click="showModal = false" class="cancel-button">No</button>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -151,5 +173,70 @@ button.delete-button:hover {
 .actions-column {
   width: 150px; /* Ajusta este valor según el ancho de tus botones */
   white-space: nowrap;
+}
+
+.modal {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0, 0, 0, 0.4);
+}
+
+.modal-content {
+  background-color: #fefefe;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 300px;
+  border-radius: 8px;
+  text-align: center;
+}
+
+.close {
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.confirm-button {
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  margin: 10px;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+.confirm-button:hover {
+  background-color: #45a049;
+}
+
+.cancel-button {
+  background-color: #f44336;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  margin: 10px;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+.cancel-button:hover {
+  background-color: #da190b;
 }
 </style>

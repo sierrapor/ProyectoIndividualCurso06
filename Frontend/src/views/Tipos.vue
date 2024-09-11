@@ -5,6 +5,9 @@ import axios from 'axios';
 
 const tipos = ref([]);
 const router = useRouter();
+const showModal = ref(false);
+const showErrorModal = ref(false);
+const tipoToDelete = ref(null);
 
 const fetchTipos = async () => {
   try {
@@ -15,10 +18,28 @@ const fetchTipos = async () => {
   }
 };
 
-const deleteTipo = async (id) => {
+const confirmDeleteTipo = async (id) => {
   try {
-    await axios.delete(`/api/tipos/${id}`);
-    tipos.value = tipos.value.filter(tipo => tipo.id !== id);
+    // Verificar si el tipo tiene obras asociadas
+    const tipo = tipos.value.find(t => t.id === id);
+    if (tipo && tipo.astros.length > 0) {
+      showErrorModal.value = true; // Muestra la ventana emergente de error
+      return;
+    }
+    
+    tipoToDelete.value = id; // Establece el ID del tipo para eliminar
+    showModal.value = true; // Muestra la ventana emergente de eliminación
+  } catch (error) {
+    console.error('Error deleting tipo:', error);
+  }
+};
+
+const deleteTipo = async () => {
+  try {
+    await axios.delete(`/api/tipos/${tipoToDelete.value}`);
+    tipos.value = tipos.value.filter(tipo => tipo.id !== tipoToDelete.value);
+    showModal.value = false;
+    tipoToDelete.value = null;
   } catch (error) {
     console.error('Error deleting tipo:', error);
   }
@@ -64,11 +85,28 @@ onMounted(() => {
           <td class="actions-column">
             <button @click="viewTipo(tipo.id)" class="view-button">Ver</button>
             <button @click="editTipo(tipo.id)" class="edit-button">Actualizar</button>
-            <button @click="deleteTipo(tipo.id)" class="delete-button">Borrar</button>
+            <button @click="confirmDeleteTipo(tipo.id)" class="delete-button">Borrar</button>
           </td>
         </tr>
       </tbody>
     </table>
+
+    <div v-if="showModal" class="modal">
+      <div class="modal-content">
+        <span class="close" @click="showModal = false">&times;</span>
+        <p>¿Estás seguro de que deseas borrar este tipo?</p>
+        <button @click="deleteTipo" class="confirm-button">Sí</button>
+        <button @click="showModal = false" class="cancel-button">No</button>
+      </div>
+    </div>
+
+    <div v-if="showErrorModal" class="modal">
+      <div class="modal-content">
+        <span class="close" @click="showErrorModal = false">&times;</span>
+        <p>No se puede borrar este tipo porque tiene astros asociados.</p>
+        <button @click="showErrorModal = false" class="cancel-button">Cerrar</button>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -141,5 +179,70 @@ button.delete-button:hover {
 .actions-column {
   width: 150px; /* Ajusta este valor según el ancho de tus botones */
   white-space: nowrap;
+}
+
+.modal {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0, 0, 0, 0.4);
+}
+
+.modal-content {
+  background-color: #fefefe;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 300px;
+  border-radius: 8px;
+  text-align: center;
+}
+
+.close {
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.confirm-button {
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  margin: 10px;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+.confirm-button:hover {
+  background-color: #45a049;
+}
+
+.cancel-button {
+  background-color: #f44336;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  margin: 10px;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+.cancel-button:hover {
+  background-color: #da190b;
 }
 </style>
