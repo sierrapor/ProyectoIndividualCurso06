@@ -76,42 +76,44 @@ onMounted(() => {
   <div>
     <h1>Astros</h1>
     <button @click="goToCreateForm" class="create-button">Crear</button>
-    <table>
-      <thead>
-        <tr>
-          <th>id</th>
-          <th>Nombre</th>
-          <th>Masa<br><small>(kg)</small></th>
-          <th>Densidad<br><small>(kg/m<sup>3</sup>)</small></th>
-          <th>Distancia<br><small>(años luz)</small></th>
-          <th>m<sub>a</sub><br><small>(adimensional)</small></th>
-          <th><i>z</i><sub>redshift</sub><br><small>(adimensional)</small></th>
-          <th>Temperatura<br><small>(K)</small></th>
-          <th>Edad<br><small>(millones de años)</small></th>
-          <th>Tipo</th>
-          <th class="actions-column">Acciones</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr v-for="astro in astros" :key="astro.id">
-          <td>{{ astro.id }}</td>
-          <td>{{ astro.nombre }}</td>
-          <td>{{ formatNumber(astro.masa) }}</td>
-          <td>{{ formatNumber(astro.densidad) }}</td>
-          <td>{{ formatNumber(astro.distancia) }}</td>
-          <td>{{ formatNumber(astro.magnitudAparente) }}</td>
-          <td>{{ formatNumber(astro.corrimientoAlRojo) }}</td>
-          <td>{{ formatNumber(astro.temperatura) }}</td>
-          <td>{{ formatNumber(astro.edad) }}</td>
-          <td>{{ astro.tipo.nombre }}</td>
-          <td class="actions-column">
-            <button @click="viewAstro(astro.id)" class="view-button">Ver</button>
-            <button @click="editAstro(astro.id)" class="edit-button">Actualizar</button>
-            <button @click="confirmDeleteAstro(astro.id)" class="delete-button">Borrar</button>
-          </td>
-        </tr>
-      </tbody>
-    </table>
+    <div class="table-container">
+      <table>
+        <thead>
+          <tr>
+            <th>id</th>
+            <th>Nombre</th>
+            <th>Masa<br><small>(kg)</small></th>
+            <th>Densidad<br><small>(kg/m<sup>3</sup>)</small></th>
+            <th>Distancia<br><small>(años luz)</small></th>
+            <th>m<sub>a</sub><br><small>(adimensional)</small></th>
+            <th><i>z</i><sub>redshift</sub><br><small>(adimensional)</small></th>
+            <th>Temperatura<br><small>(K)</small></th>
+            <th>Edad<br><small>(millones de años)</small></th>
+            <th>Tipo</th>
+            <th class="actions-column">Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="astro in astros" :key="astro.id">
+            <td>{{ astro.id }}</td>
+            <td>{{ astro.nombre }}</td>
+            <td>{{ formatNumber(astro.masa) }}</td>
+            <td>{{ formatNumber(astro.densidad) }}</td>
+            <td>{{ formatNumber(astro.distancia) }}</td>
+            <td>{{ formatNumber(astro.magnitudAparente) }}</td>
+            <td>{{ formatNumber(astro.corrimientoAlRojo) }}</td>
+            <td>{{ formatNumber(astro.temperatura) }}</td>
+            <td>{{ formatNumber(astro.edad) }}</td>
+            <td>{{ astro.tipo.nombre }}</td>
+            <td class="actions-column">
+              <button @click="viewAstro(astro.id)" class="view-button">Ver</button>
+              <button @click="editAstro(astro.id)" class="edit-button">Actualizar</button>
+              <button @click="confirmDeleteAstro(astro.id)" class="delete-button">Borrar</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
 
     <div v-if="showModal" class="modal">
       <div class="modal-content">
@@ -127,6 +129,12 @@ onMounted(() => {
 </template>
 
 <style scoped>
+.table-container {
+  max-height: 650px; /* Aumenta la altura según tus necesidades */
+  overflow-y: auto;
+  position: relative;
+}
+
 table {
   width: 100%;
   border-collapse: collapse;
@@ -139,6 +147,9 @@ th, td {
 
 th {
   background-color: #f2f2f2;
+  position: sticky;
+  top: 0;
+  z-index: 1;
 }
 
 button {

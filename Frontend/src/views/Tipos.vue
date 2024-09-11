@@ -79,30 +79,32 @@ onMounted(() => {
   <div>
     <h1>Tipos</h1>
     <button @click="goToCreateForm" class="create-button">Crear</button>
-    <table>
-      <thead>
-        <tr>
-          <th>Nombre</th>
-          <th>Descripción</th>
-          <th>Luminoso</th>
-          <th>Orbitante</th>
-          <th class="actions-column">Acciones</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr v-for="tipo in tipos" :key="tipo.id">
-          <td>{{ tipo.nombre }}</td>
-          <td>{{ tipo.descripcion }}</td>
-          <td>{{ tipo.luminoso ? 'Sí' : 'No' }}</td>
-          <td>{{ tipo.orbitante ? 'Sí' : 'No' }}</td>
-          <td class="actions-column">
-            <button @click="viewTipo(tipo.id)" class="view-button">Ver</button>
-            <button @click="editTipo(tipo.id)" class="edit-button">Actualizar</button>
-            <button @click="confirmDeleteTipo(tipo.id)" class="delete-button">Borrar</button>
-          </td>
-        </tr>
-      </tbody>
-    </table>
+    <div class="table-container">
+      <table>
+        <thead>
+          <tr>
+            <th>Nombre</th>
+            <th>Descripción</th>
+            <th>Luminoso</th>
+            <th>Orbitante</th>
+            <th class="actions-column">Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="tipo in tipos" :key="tipo.id">
+            <td>{{ tipo.nombre }}</td>
+            <td>{{ tipo.descripcion }}</td>
+            <td>{{ tipo.luminoso ? 'Sí' : 'No' }}</td>
+            <td>{{ tipo.orbitante ? 'Sí' : 'No' }}</td>
+            <td class="actions-column">
+              <button @click="viewTipo(tipo.id)" class="view-button">Ver</button>
+              <button @click="editTipo(tipo.id)" class="edit-button">Actualizar</button>
+              <button @click="confirmDeleteTipo(tipo.id)" class="delete-button">Borrar</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
 
     <div v-if="showModal" class="modal">
       <div class="modal-content">
@@ -126,6 +128,12 @@ onMounted(() => {
 </template>
 
 <style scoped>
+.table-container {
+  max-height: 650px; /* Aumenta la altura según tus necesidades */
+  overflow-y: auto;
+  position: relative;
+}
+
 table {
   width: 100%;
   border-collapse: collapse;
@@ -138,6 +146,9 @@ th, td {
 
 th {
   background-color: #f2f2f2;
+  position: sticky;
+  top: 0;
+  z-index: 1;
 }
 
 button {
