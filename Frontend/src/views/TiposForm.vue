@@ -10,6 +10,7 @@ const tipo = ref({
   orbitante: false
 });
 
+const astros = ref([]);
 const isViewMode = ref(false);
 const isEditMode = ref(false);
 const router = useRouter();
@@ -19,6 +20,7 @@ const fetchTipo = async (id) => {
   try {
     const response = await axios.get(`/api/tipos/${id}`);
     tipo.value = response.data;
+    astros.value = response.data.astros; // Extraer los astros de la respuesta
   } catch (error) {
     console.error('Error fetching tipo:', error);
   }
@@ -57,7 +59,7 @@ onMounted(() => {
 <template>
   <div class="form-container">
     <h1>{{ isViewMode ? 'Ver Tipo' : isEditMode ? 'Actualizar Tipo' : 'Crear Tipo' }}</h1>
-    <form @submit.prevent="submitForm" v-if="!isViewMode">
+    <form @submit.prevent="submitForm" v-if="!isViewMode || isEditMode">
       <div class="form-group">
         <label for="nombre">Nombre:</label>
         <input type="text" id="nombre" v-model="tipo.nombre" required />
@@ -73,6 +75,12 @@ onMounted(() => {
       <div class="form-group">
         <label for="orbitante">Orbitante:</label>
         <input type="checkbox" id="orbitante" v-model="tipo.orbitante" />
+      </div>
+      <div class="form-group">
+        <label>Astros:</label>
+        <ul>
+          <li v-for="astro in astros" :key="astro.id">{{ astro.nombre }}</li>
+        </ul>
       </div>
       <div class="form-group actions-column">
         <button type="submit" class="submit-button">{{ 'Guardar' }}</button>
@@ -95,6 +103,12 @@ onMounted(() => {
       <div class="form-group">
         <label>Orbitante:</label>
         <p>{{ tipo.orbitante ? 'Sí' : 'No' }}</p>
+      </div>
+      <div class="form-group">
+        <label>Astros:</label>
+        <ul>
+          <li v-for="astro in astros" :key="astro.id">{{ astro.nombre }}</li>
+        </ul>
       </div>
       <div class="form-group actions-column">
         <button class="submit-button disabled-button" disabled>Guardar</button>

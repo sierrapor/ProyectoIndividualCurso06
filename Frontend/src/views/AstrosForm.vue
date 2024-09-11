@@ -42,8 +42,19 @@ const fetchAstro = async (id) => {
   }
 };
 
+const convertCommasToDots = () => {
+  astro.value.masa = astro.value.masa.toString().replace(',', '.');
+  astro.value.densidad = astro.value.densidad.toString().replace(',', '.');
+  astro.value.distancia = astro.value.distancia.toString().replace(',', '.');
+  astro.value.magnitudAparente = astro.value.magnitudAparente.toString().replace(',', '.');
+  astro.value.corrimientoAlRojo = astro.value.corrimientoAlRojo.toString().replace(',', '.');
+  astro.value.temperatura = astro.value.temperatura.toString().replace(',', '.');
+  astro.value.edad = astro.value.edad.toString().replace(',', '.');
+};
+
 const submitForm = async () => {
   try {
+    convertCommasToDots();
     if (isEditMode.value) {
       await axios.put(`/api/astros/${route.params.id}`, astro.value);
       router.push({ path: '/astros', query: { message: `El astro "${astro.value.nombre}" ha sido actualizado correctamente.`, type: 'success' } });
@@ -87,31 +98,31 @@ onMounted(() => {
       </div>
       <div class="form-group">
         <label for="masa">Masa:</label>
-        <input type="number" id="masa" v-model="astro.masa" required />
+        <input type="text" id="masa" v-model="astro.masa" inputmode="decimal" required />
       </div>
       <div class="form-group">
         <label for="densidad">Densidad:</label>
-        <input type="number" id="densidad" v-model="astro.densidad" required />
+        <input type="text" id="densidad" v-model="astro.densidad" inputmode="decimal" required />
       </div>
       <div class="form-group">
         <label for="distancia">Distancia:</label>
-        <input type="number" id="distancia" v-model="astro.distancia" required />
+        <input type="text" id="distancia" v-model="astro.distancia" inputmode="decimal" required />
       </div>
       <div class="form-group">
         <label for="magnitudAparente">Magnitud Aparente:</label>
-        <input type="number" id="magnitudAparente" v-model="astro.magnitudAparente" required />
+        <input type="text" id="magnitudAparente" v-model="astro.magnitudAparente" inputmode="decimal" required />
       </div>
       <div class="form-group">
         <label for="corrimientoAlRojo">Corrimiento al Rojo:</label>
-        <input type="number" id="corrimientoAlRojo" v-model="astro.corrimientoAlRojo" required />
+        <input type="text" id="corrimientoAlRojo" v-model="astro.corrimientoAlRojo" inputmode="decimal" required />
       </div>
       <div class="form-group">
         <label for="temperatura">Temperatura:</label>
-        <input type="number" id="temperatura" v-model="astro.temperatura" required />
+        <input type="text" id="temperatura" v-model="astro.temperatura" inputmode="decimal" required />
       </div>
       <div class="form-group">
         <label for="edad">Edad:</label>
-        <input type="number" id="edad" v-model="astro.edad" required />
+        <input type="text" id="edad" v-model="astro.edad" inputmode="decimal" required />
       </div>
       <div class="form-group">
         <label for="tipo">Tipo:</label>

@@ -79,12 +79,13 @@ onMounted(() => {
     <table>
       <thead>
         <tr>
+          <th>id</th>
           <th>Nombre</th>
           <th>Masa<br><small>(kg)</small></th>
           <th>Densidad<br><small>(kg/m<sup>3</sup>)</small></th>
           <th>Distancia<br><small>(años luz)</small></th>
-          <th>m<sub>a</sub><br><small>(dimensionless)</small></th>
-          <th><i>z</i><sub>redshift</sub><br><small>(dimensionless)</small></th>
+          <th>m<sub>a</sub><br><small>(adimensional)</small></th>
+          <th><i>z</i><sub>redshift</sub><br><small>(adimensional)</small></th>
           <th>Temperatura<br><small>(K)</small></th>
           <th>Edad<br><small>(millones de años)</small></th>
           <th>Tipo</th>
@@ -93,6 +94,7 @@ onMounted(() => {
       </thead>
       <tbody>
         <tr v-for="astro in astros" :key="astro.id">
+          <td>{{ astro.id }}</td>
           <td>{{ astro.nombre }}</td>
           <td>{{ formatNumber(astro.masa) }}</td>
           <td>{{ formatNumber(astro.densidad) }}</td>
