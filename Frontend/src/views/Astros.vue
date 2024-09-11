@@ -97,13 +97,13 @@ onMounted(() => {
           <tr v-for="astro in astros" :key="astro.id">
             <td>{{ astro.id }}</td>
             <td>{{ astro.nombre }}</td>
-            <td>{{ formatNumber(astro.masa) }}</td>
-            <td>{{ formatNumber(astro.densidad) }}</td>
-            <td>{{ formatNumber(astro.distancia) }}</td>
-            <td>{{ formatNumber(astro.magnitudAparente) }}</td>
-            <td>{{ formatNumber(astro.corrimientoAlRojo) }}</td>
-            <td>{{ formatNumber(astro.temperatura) }}</td>
-            <td>{{ formatNumber(astro.edad) }}</td>
+            <td class="text-right">{{ formatNumber(astro.masa) }}</td>
+            <td class="text-right">{{ formatNumber(astro.densidad) }}</td>
+            <td class="text-right">{{ formatNumber(astro.distancia) }}</td>
+            <td class="text-right">{{ formatNumber(astro.magnitudAparente) }}</td>
+            <td class="text-right">{{ formatNumber(astro.corrimientoAlRojo) }}</td>
+            <td class="text-right">{{ formatNumber(astro.temperatura) }}</td>
+            <td class="text-right">{{ formatNumber(astro.edad) }}</td>
             <td>{{ astro.tipo.nombre }}</td>
             <td class="actions-column">
               <button @click="viewAstro(astro.id)" class="view-button">Ver</button>
@@ -150,6 +150,10 @@ th {
   position: sticky;
   top: 0;
   z-index: 1;
+}
+
+.text-right {
+  text-align: right;
 }
 
 button {
