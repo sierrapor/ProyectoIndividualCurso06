@@ -34,30 +34,30 @@ public class Astro {
 
     @Positive
     @Column(name = "MASA")
-    private float masa;
+    private double masa;
 
     @Positive
     @Column(name = "DENSIDAD")
-    private float densidad;
+    private double densidad;
 
     @Positive
     @Column(name = "DISTANCIA")
-    private float distancia;
+    private double distancia;
 
     @Column(name = "MAGNITUD_APARENTE")
-    private float magnitudAparente;
+    private double magnitudAparente;
 
     @PositiveOrZero
     @Column(name = "CORRIMIENTO_AL_ROJO")
-    private float corrimientoAlRojo;
+    private double corrimientoAlRojo;
 
     @Positive
     @Column(name = "TEMPERATURA")
-    private float temperatura;
+    private double temperatura;
 
     @Positive
     @Column(name = "EDAD")
-    private float edad;
+    private double edad;
 
     @ManyToOne
     @JsonIgnoreProperties("astros")
@@ -68,7 +68,7 @@ public class Astro {
     public Astro() {}
 
     // Constructor genérico
-    public Astro(String nombre, String descripcion, float masa, float densidad, float distancia, float magnitudAparente, float corrimientoAlRojo, float temperatura, float edad, Tipo tipo) {
+    public Astro(String nombre, String descripcion, double masa, double densidad, double distancia, double magnitudAparente, double corrimientoAlRojo, double temperatura, double edad, Tipo tipo) {
         this.nombre = nombre;
         this.descripcion = descripcion;
         this.masa = masa;
@@ -106,59 +106,59 @@ public class Astro {
         this.descripcion = descripcion;
     }
 
-    public float getMasa() {
+    public double getMasa() {
         return masa;
     }
 
-    public void setMasa(float masa) {
+    public void setMasa(double masa) {
         this.masa = masa;
     }
 
-    public float getDensidad() {
+    public double getDensidad() {
         return densidad;
     }
 
-    public void setDensidad(float densidad) {
+    public void setDensidad(double densidad) {
         this.densidad = densidad;
     }
 
-    public float getDistancia() {
+    public double getDistancia() {
         return distancia;
     }
 
-    public void setDistancia(float distancia) {
+    public void setDistancia(double distancia) {
         this.distancia = distancia;
     }
 
-    public float getMagnitudAparente() {
+    public double getMagnitudAparente() {
         return magnitudAparente;
     }
 
-    public void setMagnitudAparente(float magnitudAparente) {
+    public void setMagnitudAparente(double magnitudAparente) {
         this.magnitudAparente = magnitudAparente;
     }
 
-    public float getCorrimientoAlRojo() {
+    public double getCorrimientoAlRojo() {
         return corrimientoAlRojo;
     }
 
-    public void setCorrimientoAlRojo(float corrimientoAlRojo) {
+    public void setCorrimientoAlRojo(double corrimientoAlRojo) {
         this.corrimientoAlRojo = corrimientoAlRojo;
     }
 
-    public float getTemperatura() {
+    public double getTemperatura() {
         return temperatura;
     }
 
-    public void setTemperatura(float temperatura) {
+    public void setTemperatura(double temperatura) {
         this.temperatura = temperatura;
     }
 
-    public float getEdad() {
+    public double getEdad() {
         return edad;
     }
 
-    public void setEdad(float edad) {
+    public void setEdad(double edad) {
         this.edad = edad;
     }
 
