@@ -37,6 +37,10 @@ const submitForm = async () => {
   }
 };
 
+const cancel = () => {
+  router.push('/tipos');
+};
+
 onMounted(() => {
   if (route.params.id) {
     if (route.query.edit) {
@@ -69,7 +73,10 @@ onMounted(() => {
           <label for="orbitante">Orbitante:</label>
           <input type="checkbox" id="orbitante" v-model="tipo.orbitante" />
         </div>
-        <button type="submit" class="submit-button">{{ isEditMode ? 'Actualizar' : 'Crear' }}</button>
+        <div class="form-group actions-column">
+          <button type="submit" class="submit-button">{{ isEditMode ? 'Actualizar' : 'Crear' }}</button>
+          <button type="button" @click="cancel" class="cancel-button">Cancelar</button>
+        </div>
       </form>
       <div v-else>
         <div class="form-group">
@@ -88,7 +95,9 @@ onMounted(() => {
           <label>Orbitante:</label>
           <p>{{ tipo.orbitante ? 'Sí' : 'No' }}</p>
         </div>
-        <button @click="router.push('/tipos')" class="submit-button">Volver</button>
+        <div class="form-group actions-column">
+          <button @click="cancel" class="cancel-button">Atrás</button>
+        </div>
       </div>
     </div>
 </template>
@@ -129,18 +138,30 @@ input[type="checkbox"] {
   width: auto;
 }
 
-.submit-button {
-  display: block;
-  width: 100%;
+.submit-button,
+.cancel-button {
+  display: inline-block;
+  width: 48%;
   padding: 10px;
+  margin-top: 10px;
   background-color: #007bff;
   color: white;
   border: none;
   border-radius: 4px;
   cursor: pointer;
+  text-align: center;
 }
 
-.submit-button:hover {
+.submit-button:hover,
+.cancel-button:hover {
   background-color: #0056b3;
+}
+
+.cancel-button {
+  background-color: #6c757d;
+}
+
+.cancel-button:hover {
+  background-color: #5a6268;
 }
 </style>

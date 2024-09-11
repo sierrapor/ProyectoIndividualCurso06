@@ -42,44 +42,44 @@ onMounted(() => {
 </script>
 
 <template>
-    <div>
-      <h1>Astros</h1>
-      <button @click="goToCreateForm" class="create-button">Crear</button>
-      <table>
-        <thead>
-          <tr>
-            <th>Nombre</th>
-            <th>Masa<br><small>(kg)</small></th>
-            <th>Densidad<br><small>(kg/m<sup>3</sup>)</small></th>
-            <th>Distancia<br><small>(años luz)</small></th>
-            <th>m<sub>a</sub><br><small>(dimensionless)</small></th>
-            <th><i>z</i><sub>redshift</sub><br><small>(dimensionless)</small></th>
-            <th>Temperatura<br><small>(K)</small></th>
-            <th>Edad<br><small>(millones de años)</small></th>
-            <th>Tipo</th>
-            <th>Acciones</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="astro in astros" :key="astro.id">
-            <td>{{ astro.nombre }}</td>
-            <td>{{ astro.masa }}</td>
-            <td>{{ astro.densidad }}</td>
-            <td>{{ astro.distancia }}</td>
-            <td>{{ astro.magnitudAparente }}</td>
-            <td>{{ astro.corrimientoAlRojo }}</td>
-            <td>{{ astro.temperatura }}</td>
-            <td>{{ astro.edad }}</td>
-            <td>{{ astro.tipo.nombre }}</td>
-            <td>
-              <button @click="viewAstro(astro.id)">Ver</button>
-              <button @click="editAstro(astro.id)">Actualizar</button>
-              <button @click="deleteAstro(astro.id)">Borrar</button>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
+  <div>
+    <h1>Astros</h1>
+    <button @click="goToCreateForm" class="create-button">Crear</button>
+    <table>
+      <thead>
+        <tr>
+          <th>Nombre</th>
+          <th>Masa<br><small>(kg)</small></th>
+          <th>Densidad<br><small>(kg/m<sup>3</sup>)</small></th>
+          <th>Distancia<br><small>(años luz)</small></th>
+          <th>m<sub>a</sub><br><small>(dimensionless)</small></th>
+          <th><i>z</i><sub>redshift</sub><br><small>(dimensionless)</small></th>
+          <th>Temperatura<br><small>(K)</small></th>
+          <th>Edad<br><small>(millones de años)</small></th>
+          <th>Tipo</th>
+          <th class="actions-column">Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr v-for="astro in astros" :key="astro.id">
+          <td>{{ astro.nombre }}</td>
+          <td>{{ astro.masa }}</td>
+          <td>{{ astro.densidad }}</td>
+          <td>{{ astro.distancia }}</td>
+          <td>{{ astro.magnitudAparente }}</td>
+          <td>{{ astro.corrimientoAlRojo }}</td>
+          <td>{{ astro.temperatura }}</td>
+          <td>{{ astro.edad }}</td>
+          <td>{{ astro.tipo.nombre }}</td>
+          <td class="actions-column">
+            <button @click="viewAstro(astro.id)" class="view-button">Ver</button>
+            <button @click="editAstro(astro.id)" class="edit-button">Actualizar</button>
+            <button @click="deleteAstro(astro.id)" class="delete-button">Borrar</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 </template>
 
 <style scoped>
@@ -99,7 +99,6 @@ th {
 
 button {
   margin-right: 5px;
-  background-color: #ff4d4d;
   color: white;
   border: none;
   padding: 5px 10px;
@@ -108,6 +107,30 @@ button {
 }
 
 button:hover {
+  background-color: #ff1a1a;
+}
+
+button.view-button {
+  background-color: #4d79ff;
+}
+
+button.view-button:hover {
+  background-color: #1a53ff;
+}
+
+button.edit-button {
+  background-color: #4d79ff;
+}
+
+button.edit-button:hover {
+  background-color: #1a53ff;
+}
+
+button.delete-button {
+  background-color: #ff4d4d;
+}
+
+button.delete-button:hover {
   background-color: #ff1a1a;
 }
 
@@ -123,5 +146,10 @@ button:hover {
 
 .create-button:hover {
   background-color: #45a049;
+}
+
+.actions-column {
+  width: 150px; /* Ajusta este valor según el ancho de tus botones */
+  white-space: nowrap;
 }
 </style>

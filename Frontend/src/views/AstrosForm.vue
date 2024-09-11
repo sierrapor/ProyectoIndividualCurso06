@@ -55,6 +55,10 @@ const submitForm = async () => {
   }
 };
 
+const cancel = () => {
+  router.push('/astros');
+};
+
 onMounted(() => {
   fetchTipos();
   if (route.params.id) {
@@ -115,6 +119,7 @@ onMounted(() => {
           </select>
         </div>
         <button type="submit" class="submit-button">{{ isEditMode ? 'Actualizar' : 'Crear' }}</button>
+        <button type="button" @click="cancel" class="cancel-button">Cancelar</button>
       </form>
       <div v-else>
         <div class="form-group">
@@ -157,7 +162,7 @@ onMounted(() => {
           <label>Tipo:</label>
           <p>{{ astro.tipo.nombre }}</p>
         </div>
-        <button @click="router.push('/astros')" class="submit-button">Volver</button>
+        <button @click="cancel" class="cancel-button">Atrás</button>
       </div>
     </div>
 </template>
@@ -195,18 +200,30 @@ select {
   box-sizing: border-box;
 }
 
-.submit-button {
-  display: block;
-  width: 100%;
+.submit-button,
+.cancel-button {
+  display: inline-block;
+  width: 48%;
   padding: 10px;
+  margin-top: 10px;
   background-color: #007bff;
   color: white;
   border: none;
   border-radius: 4px;
   cursor: pointer;
+  text-align: center;
 }
 
-.submit-button:hover {
+.submit-button:hover,
+.cancel-button:hover {
   background-color: #0056b3;
+}
+
+.cancel-button {
+  background-color: #6c757d;
+}
+
+.cancel-button:hover {
+  background-color: #5a6268;
 }
 </style>
