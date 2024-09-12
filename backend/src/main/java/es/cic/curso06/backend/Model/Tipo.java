@@ -36,7 +36,7 @@ public class Tipo {
     @Column(name = "ORBITANTE")
     private boolean orbitante;
 
-    @OneToMany(mappedBy = "tipo", cascade = {CascadeType.PERSIST, CascadeType.MERGE}, orphanRemoval = true)
+    @OneToMany(mappedBy = "tipo", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     private List<Astro> astros;
 
     // Constructor vacío

@@ -10,6 +10,7 @@ const showModal = ref(false);
 const showErrorModal = ref(false);
 const tipoToDeleteId = ref(null);
 const tipoToDeleteName = ref('');
+const tipoToDelete = ref(null); // Definir tipoToDelete
 const notificationMessage = ref('');
 const notificationType = ref('');
 
@@ -41,11 +42,21 @@ const confirmDeleteTipo = (id) => {
   const tipo = tipos.value.find(t => t.id === id);
   tipoToDeleteId.value = id;
   tipoToDeleteName.value = tipo.nombre;
+  tipoToDelete.value = tipo; // Inicializar tipoToDelete
   showModal.value = true;
 };
 
 const deleteTipo = async () => {
   try {
+    // Verificar si el tipo tiene astros asociados
+    if (tipoToDelete.value.astros && tipoToDelete.value.astros.length > 0) {
+      notificationMessage.value = `El tipo "${tipoToDeleteName.value}" no se puede eliminar porque tiene astros asociados.`;
+      notificationType.value = 'error';
+      showErrorModal.value = true;
+      return;
+    }
+
+    // Si no tiene astros asociados, proceder con la eliminación
     await axios.delete(`/api/tipos/${tipoToDeleteId.value}`);
     tipos.value = tipos.value.filter(t => t.id !== tipoToDeleteId.value);
     notificationMessage.value = `El tipo "${tipoToDeleteName.value}" ha sido borrado correctamente.`;
