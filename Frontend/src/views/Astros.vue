@@ -82,7 +82,6 @@ onMounted(() => {
       <table>
         <thead>
           <tr>
-            <th>id</th>
             <th>Nombre</th>
             <th>Masa<br><small>(kg)</small></th>
             <th>Densidad<br><small>(kg/m<sup>3</sup>)</small></th>
@@ -97,7 +96,6 @@ onMounted(() => {
         </thead>
         <tbody>
           <tr v-for="astro in astros" :key="astro.id">
-            <td>{{ astro.id }}</td>
             <td>{{ astro.nombre }}</td>
             <td class="text-right">{{ formatNumber(astro.masa) }}</td>
             <td class="text-right">{{ formatNumber(astro.densidad) }}</td>
