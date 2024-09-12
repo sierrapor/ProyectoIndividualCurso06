@@ -78,9 +78,10 @@ onMounted(() => {
       </div>
       <div class="form-group">
         <label>Astros:</label>
-        <ul>
+        <ul v-if="astros.length">
           <li v-for="astro in astros" :key="astro.id">{{ astro.nombre }}</li>
         </ul>
+        <p v-else>No hay astros asociados</p>
       </div>
       <div class="form-group actions-column">
         <button type="submit" class="submit-button">{{ 'Guardar' }}</button>
@@ -106,9 +107,10 @@ onMounted(() => {
       </div>
       <div class="form-group">
         <label>Astros:</label>
-        <ul>
+        <ul v-if="astros.length">
           <li v-for="astro in astros" :key="astro.id">{{ astro.nombre }}</li>
         </ul>
+        <p v-else>No hay astros asociados</p>
       </div>
       <div class="form-group actions-column">
         <button class="submit-button disabled-button" disabled>Guardar</button>
