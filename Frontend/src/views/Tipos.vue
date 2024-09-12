@@ -1,11 +1,12 @@
 <script setup>
 import { ref, onMounted } from 'vue';
-import { useRouter } from 'vue-router';
+import { useRouter, useRoute } from 'vue-router';
 import axios from 'axios';
 import Notification from '@/components/Notification.vue';
 
 const tipos = ref([]);
 const router = useRouter();
+const route = useRoute();
 const showModal = ref(false);
 const showErrorModal = ref(false);
 const tipoToDeleteId = ref(null);
@@ -76,6 +77,10 @@ const deleteTipo = async () => {
 
 onMounted(() => {
   fetchTipos();
+  if (route.query.message) {
+    notificationMessage.value = route.query.message;
+    notificationType.value = route.query.type || 'success';
+  }
 });
 </script>
 
@@ -93,7 +98,7 @@ onMounted(() => {
             <th>Descripción</th>
             <th>Luminoso</th>
             <th>Orbitante</th>
-            <th class="actions-column">Acciones</th>
+            <th class="actions-column"></th>
           </tr>
         </thead>
         <tbody>

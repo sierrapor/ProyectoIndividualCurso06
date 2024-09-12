@@ -30,7 +30,7 @@ const submitForm = async () => {
   try {
     if (isEditMode.value) {
       await axios.put(`/api/tipos/${route.params.id}`, tipo.value);
-      router.push({ path: '/tipos', query: { message: `El tipo "${tipo.value.nombre}" ha sido actualizado correctamente.`, type: 'success' } });
+      router.push({ path: '/tipos', query: { message: `El tipo "${tipo.value.nombre}" ha sido editado correctamente.`, type: 'success' } });
     } else {
       await axios.post('/api/tipos', tipo.value);
       router.push({ path: '/tipos', query: { message: `El tipo "${tipo.value.nombre}" ha sido creado correctamente.`, type: 'success' } });

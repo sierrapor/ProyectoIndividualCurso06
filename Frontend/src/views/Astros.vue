@@ -73,6 +73,9 @@ const editAstro = (id) => {
 };
 
 const formatNumber = (number) => {
+  if (Math.abs(number) >= 1e6) {
+    return number.toExponential(3).replace('e+', 'e');
+  }
   return number.toLocaleString('es-ES');
 };
 
@@ -104,7 +107,7 @@ onMounted(() => {
             <th>Temperatura<br><small>(K)</small></th>
             <th>Edad<br><small>(millones de años)</small></th>
             <th>Tipo</th>
-            <th class="actions-column">Acciones</th>
+            <th class="actions-column"></th>
           </tr>
         </thead>
         <tbody>
