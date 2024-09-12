@@ -44,13 +44,15 @@ const fetchAstro = async (id) => {
 };
 
 const convertCommasToDots = () => {
-  astro.value.masa = astro.value.masa.toString().replace(',', '.');
-  astro.value.densidad = astro.value.densidad.toString().replace(',', '.');
-  astro.value.distancia = astro.value.distancia.toString().replace(',', '.');
-  astro.value.magnitudAparente = astro.value.magnitudAparente.toString().replace(',', '.');
-  astro.value.corrimientoAlRojo = astro.value.corrimientoAlRojo.toString().replace(',', '.');
-  astro.value.temperatura = astro.value.temperatura.toString().replace(',', '.');
-  astro.value.edad = astro.value.edad.toString().replace(',', '.');
+  const removeThousandSeparators = (value) => value.toString().replace(/\./g, '').replace(',', '.');
+
+  astro.value.masa = removeThousandSeparators(astro.value.masa);
+  astro.value.densidad = removeThousandSeparators(astro.value.densidad);
+  astro.value.distancia = removeThousandSeparators(astro.value.distancia);
+  astro.value.magnitudAparente = removeThousandSeparators(astro.value.magnitudAparente);
+  astro.value.corrimientoAlRojo = removeThousandSeparators(astro.value.corrimientoAlRojo);
+  astro.value.temperatura = removeThousandSeparators(astro.value.temperatura);
+  astro.value.edad = removeThousandSeparators(astro.value.edad);
 };
 
 const validateForm = () => {
