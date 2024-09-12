@@ -33,6 +33,19 @@ const confirmDeleteAstro = (id) => {
 
 const deleteAstro = async () => {
   try {
+    // Actualiza la lista de astros antes de proceder con la eliminación
+    await fetchAstros();
+
+    // Verifica si el astro aún existe en la lista actualizada
+    const astro = astros.value.find(a => a.id === astroToDelete.value);
+    if (!astro) {
+      notificationMessage.value = `El astro "${astroToDeleteName.value}" ya no existe.`;
+      notificationType.value = 'error';
+      showModal.value = false;
+      return;
+    }
+
+    // Procede con la eliminación del astro
     await axios.delete(`/api/astros/${astroToDelete.value}`);
     astros.value = astros.value.filter(astro => astro.id !== astroToDelete.value);
     showModal.value = false;
@@ -60,6 +73,9 @@ const editAstro = (id) => {
 };
 
 const formatNumber = (number) => {
+  if (Math.abs(number) >= 1e6) {
+    return number.toExponential(3).replace('e+', 'e');
+  }
   return number.toLocaleString('es-ES');
 };
 
@@ -91,7 +107,7 @@ onMounted(() => {
             <th>Temperatura<br><small>(K)</small></th>
             <th>Edad<br><small>(millones de años)</small></th>
             <th>Tipo</th>
-            <th class="actions-column">Acciones</th>
+            <th class="actions-column"></th>
           </tr>
         </thead>
         <tbody>
@@ -107,7 +123,7 @@ onMounted(() => {
             <td>{{ astro.tipo.nombre }}</td>
             <td class="actions-column">
               <button @click="viewAstro(astro.id)" class="view-button">Ver</button>
-              <button @click="editAstro(astro.id)" class="edit-button">Actualizar</button>
+              <button @click="editAstro(astro.id)" class="edit-button">Editar</button>
               <button @click="confirmDeleteAstro(astro.id)" class="delete-button">Borrar</button>
             </td>
           </tr>
@@ -170,6 +186,7 @@ button {
   padding: 5px 10px;
   cursor: pointer;
   border-radius: 4px;
+  width: 70px; /* Define un ancho fijo para todos los botones */
 }
 
 button:hover {
