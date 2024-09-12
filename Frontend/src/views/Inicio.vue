@@ -20,7 +20,7 @@
 
 .content {
   text-align: center; /* Centra el texto dentro del contenedor */
-  color: white; /* Asegura que el texto sea legible sobre la imagen de fondo */
+  color: black; /* Asegura que el texto sea legible sobre la imagen de fondo */
 }
 
 .welcome-message {
