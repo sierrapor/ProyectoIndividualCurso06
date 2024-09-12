@@ -1,18 +1,19 @@
 <script setup>
 import { ref, onMounted } from 'vue';
-import { useRouter, useRoute } from 'vue-router';
+import { useRouter } from 'vue-router';
 import axios from 'axios';
-import Notification from '@/components/Notification.vue';
 
 const tipos = ref([]);
 const router = useRouter();
-const route = useRoute();
 const showModal = ref(false);
 const showErrorModal = ref(false);
-const tipoToDelete = ref(null);
+const tipoToDeleteId = ref(null);
 const tipoToDeleteName = ref('');
 const notificationMessage = ref('');
-const notificationType = ref('success');
+const notificationType = ref('');
+
+import checkMarkIcon from '@/assets/Check-mark.png';
+import redCrossIcon from '@/assets/RedCross.png';
 
 const fetchTipos = async () => {
   try {
@@ -23,55 +24,44 @@ const fetchTipos = async () => {
   }
 };
 
-const confirmDeleteTipo = async (id) => {
-  try {
-    const tipo = tipos.value.find(t => t.id === id);
-    if (tipo && tipo.astros.length > 0) {
-      tipoToDeleteName.value = tipo.nombre;
-      showErrorModal.value = true;
-      return;
-    }
-    
-    tipoToDelete.value = id;
-    tipoToDeleteName.value = tipo.nombre;
-    showModal.value = true;
-  } catch (error) {
-    console.error('Error deleting tipo:', error);
-  }
+const goToCreateForm = () => {
+  router.push({ path: '/tiposForm' });
+};
+
+const viewTipo = (id) => {
+  router.push({ path: `/tiposForm/${id}`, query: { view: true } });
+};
+
+const editTipo = (id) => {
+  router.push({ path: `/tiposForm/${id}`, query: { edit: true } });
+};
+
+const confirmDeleteTipo = (id) => {
+  const tipo = tipos.value.find(t => t.id === id);
+  tipoToDeleteId.value = id;
+  tipoToDeleteName.value = tipo.nombre;
+  showModal.value = true;
 };
 
 const deleteTipo = async () => {
   try {
-    await axios.delete(`/api/tipos/${tipoToDelete.value}`);
-    tipos.value = tipos.value.filter(tipo => tipo.id !== tipoToDelete.value);
-    showModal.value = false;
+    await axios.delete(`/api/tipos/${tipoToDeleteId.value}`);
+    tipos.value = tipos.value.filter(t => t.id !== tipoToDeleteId.value);
     notificationMessage.value = `El tipo "${tipoToDeleteName.value}" ha sido borrado correctamente.`;
     notificationType.value = 'success';
-    tipoToDelete.value = null;
-    tipoToDeleteName.value = '';
   } catch (error) {
-    console.error('Error deleting tipo:', error);
+    if (error.response && error.response.status === 400) {
+      showErrorModal.value = true;
+    } else {
+      console.error('Error deleting tipo:', error);
+    }
+  } finally {
+    showModal.value = false;
   }
-};
-
-const goToCreateForm = () => {
-  router.push('/tiposForm');
-};
-
-const viewTipo = (id) => {
-  router.push(`/tiposForm/${id}`);
-};
-
-const editTipo = (id) => {
-  router.push(`/tiposForm/${id}?edit=true`);
 };
 
 onMounted(() => {
   fetchTipos();
-  if (route.query.message) {
-    notificationMessage.value = route.query.message;
-    notificationType.value = route.query.type || 'success';
-  }
 });
 </script>
 
@@ -96,11 +86,17 @@ onMounted(() => {
           <tr v-for="tipo in tipos" :key="tipo.id">
             <td>{{ tipo.nombre }}</td>
             <td>{{ tipo.descripcion }}</td>
-            <td>{{ tipo.luminoso ? 'Sí' : 'No' }}</td>
-            <td>{{ tipo.orbitante ? 'Sí' : 'No' }}</td>
+            <td>
+              {{ tipo.luminoso ? 'Sí' : 'No' }}
+              <img :src="tipo.luminoso ? checkMarkIcon : redCrossIcon" alt="Luminoso Icon" class="boolean-icon" />
+            </td>
+            <td>
+              {{ tipo.orbitante ? 'Sí' : 'No' }}
+              <img :src="tipo.orbitante ? checkMarkIcon : redCrossIcon" alt="Orbitante Icon" class="boolean-icon" />
+            </td>
             <td class="actions-column">
               <button @click="viewTipo(tipo.id)" class="view-button">Ver</button>
-              <button @click="editTipo(tipo.id)" class="edit-button">Actualizar</button>
+              <button @click="editTipo(tipo.id)" class="edit-button">Editar</button>
               <button @click="confirmDeleteTipo(tipo.id)" class="delete-button">Borrar</button>
             </td>
           </tr>
@@ -167,6 +163,7 @@ button {
   padding: 5px 10px;
   cursor: pointer;
   border-radius: 4px;
+  width: 70px; /* Define un ancho fijo para todos los botones */
 }
 
 button:hover {
@@ -214,6 +211,13 @@ button.delete-button:hover {
 .actions-column {
   width: 150px; /* Ajusta este valor según el ancho de tus botones */
   white-space: nowrap;
+}
+
+.boolean-icon {
+  width: 20px;
+  height: 20px;
+  margin-left: 5px;
+  vertical-align: middle;
 }
 
 .modal {

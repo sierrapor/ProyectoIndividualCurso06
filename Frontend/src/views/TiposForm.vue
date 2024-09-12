@@ -58,7 +58,7 @@ onMounted(() => {
 
 <template>
   <div class="form-container">
-    <h1>{{ isViewMode ? 'Ver Tipo' : isEditMode ? 'Actualizar Tipo' : 'Crear Tipo' }}</h1>
+    <h1>{{ isViewMode ? 'Ver Tipo' : isEditMode ? 'Editar Tipo' : 'Crear Tipo' }}</h1>
     <form @submit.prevent="submitForm" v-if="!isViewMode || isEditMode">
       <div class="form-group">
         <label for="nombre">Nombre:</label>

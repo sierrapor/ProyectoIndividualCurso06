@@ -107,7 +107,7 @@ onMounted(() => {
             <td>{{ astro.tipo.nombre }}</td>
             <td class="actions-column">
               <button @click="viewAstro(astro.id)" class="view-button">Ver</button>
-              <button @click="editAstro(astro.id)" class="edit-button">Actualizar</button>
+              <button @click="editAstro(astro.id)" class="edit-button">Editar</button>
               <button @click="confirmDeleteAstro(astro.id)" class="delete-button">Borrar</button>
             </td>
           </tr>
@@ -170,6 +170,7 @@ button {
   padding: 5px 10px;
   cursor: pointer;
   border-radius: 4px;
+  width: 70px; /* Define un ancho fijo para todos los botones */
 }
 
 button:hover {

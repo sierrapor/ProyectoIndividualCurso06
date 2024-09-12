@@ -122,7 +122,7 @@ onMounted(() => {
 
 <template>
   <div class="form-container">
-    <h1>{{ isViewMode ? 'Ver Astro' : isEditMode ? 'Actualizar Astro' : 'Crear Astro' }}</h1>
+    <h1>{{ isViewMode ? 'Ver Astro' : isEditMode ? 'Editar Astro' : 'Crear Astro' }}</h1>
     <form @submit.prevent="submitForm" v-if="!isViewMode">
       <div class="form-group">
         <label for="nombre">Nombre:</label>
