@@ -154,6 +154,7 @@ input[type="checkbox"] {
 
 input[type="checkbox"] {
   width: auto;
+  accent-color: #0056b3; /* Cambia el color del checkbox a un azul más oscuro */
 }
 
 .submit-button,
