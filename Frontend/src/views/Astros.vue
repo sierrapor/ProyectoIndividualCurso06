@@ -33,6 +33,19 @@ const confirmDeleteAstro = (id) => {
 
 const deleteAstro = async () => {
   try {
+    // Actualiza la lista de astros antes de proceder con la eliminación
+    await fetchAstros();
+
+    // Verifica si el astro aún existe en la lista actualizada
+    const astro = astros.value.find(a => a.id === astroToDelete.value);
+    if (!astro) {
+      notificationMessage.value = `El astro "${astroToDeleteName.value}" ya no existe.`;
+      notificationType.value = 'error';
+      showModal.value = false;
+      return;
+    }
+
+    // Procede con la eliminación del astro
     await axios.delete(`/api/astros/${astroToDelete.value}`);
     astros.value = astros.value.filter(astro => astro.id !== astroToDelete.value);
     showModal.value = false;
