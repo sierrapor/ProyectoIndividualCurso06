@@ -81,7 +81,7 @@ onMounted(() => {
         <ul v-if="astros.length">
           <li v-for="astro in astros" :key="astro.id">{{ astro.nombre }}</li>
         </ul>
-        <p v-else>No hay astros asociados</p>
+        <p v-if="!astros.length">No hay astros asociados</p>
       </div>
       <div class="form-group actions-column">
         <button type="submit" class="submit-button">{{ 'Guardar' }}</button>
@@ -107,10 +107,12 @@ onMounted(() => {
       </div>
       <div class="form-group">
         <label>Astros:</label>
-        <ul v-if="astros.length">
-          <li v-for="astro in astros" :key="astro.id">{{ astro.nombre }}</li>
-        </ul>
-        <p v-else>No hay astros asociados</p>
+        <div class="astros-list">
+          <ul>
+            <li v-for="astro in astros" :key="astro.id">{{ astro.nombre }}</li>
+          </ul>
+        </div>
+        <p v-if="!astros.length">No hay astros asociados</p>
       </div>
       <div class="form-group actions-column">
         <button class="submit-button disabled-button" disabled>Guardar</button>
@@ -187,5 +189,24 @@ input[type="checkbox"] {
 .disabled-button {
   background-color: #d3d3d3;
   cursor: not-allowed;
+}
+
+.astros-list {
+  max-height: 200px; /* Ajusta la altura según sea necesario */
+  overflow-y: auto;
+}
+
+.astros-list ul {
+  display: grid;
+  grid-template-columns: 1fr 1fr; /* Dos columnas */
+  gap: 10px;
+  list-style-type: none;
+  padding: 0;
+}
+
+.astros-list li {
+  background-color: #f1f1f1;
+  padding: 5px;
+  border-radius: 4px;
 }
 </style>
