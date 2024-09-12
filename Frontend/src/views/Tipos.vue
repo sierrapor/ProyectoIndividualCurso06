@@ -2,6 +2,7 @@
 import { ref, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 import axios from 'axios';
+import Notification from '@/components/Notification.vue';
 
 const tipos = ref([]);
 const router = useRouter();
@@ -54,6 +55,8 @@ const deleteTipo = async () => {
       showErrorModal.value = true;
     } else {
       console.error('Error deleting tipo:', error);
+      notificationMessage.value = 'Error al eliminar el tipo';
+      notificationType.value = 'error';
     }
   } finally {
     showModal.value = false;
