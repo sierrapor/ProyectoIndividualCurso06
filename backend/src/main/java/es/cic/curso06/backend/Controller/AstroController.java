@@ -47,8 +47,12 @@ public class AstroController {
 
     @PutMapping("/{id}")
     public ResponseEntity<Astro> updateAstro(@PathVariable Long id, @RequestBody Astro astro) {
-        if (astro.getId() != id || astro.getId() == null){
+        if (astro.getId() == null || !astro.getId().equals(id)) {
             return ResponseEntity.badRequest().build();
+        }
+        Astro existingAstro = astroService.findById(id);
+        if (existingAstro == null) {
+            return ResponseEntity.notFound().build();
         }
         return ResponseEntity.ok(astroService.save(astro));
     }

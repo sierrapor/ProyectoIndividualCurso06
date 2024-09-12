@@ -24,12 +24,12 @@ const router = createRouter({
       component: Astros
     },
     {
-      path: '/tiposForm',
+      path: '/tiposForm/:id?',
       name: 'tiposForm',
       component: TiposForm
     },
     {
-      path: '/astrosForm',
+      path: '/astrosForm/:id?',
       name: 'astrosForm',
       component: AstrosForm
     }

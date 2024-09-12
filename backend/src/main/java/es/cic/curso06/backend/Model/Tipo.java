@@ -7,6 +7,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.Size;
 import jakarta.persistence.Column;
 import java.util.ArrayList;
 import java.util.List;
@@ -20,12 +21,15 @@ public class Tipo {
     @Column(name = "ID")
     private Long id;
 
+    @Size(max = 50, min = 1)
     @Column(name = "NOMBRE")
     private String nombre;
 
+    @Size(max = 500, min = 1)
     @Column(name = "DESCRIPCION")
     private String descripcion;
 
+    
     @Column(name = "LUMINOSO")
     private boolean luminoso;
 
